@@ -69,6 +69,11 @@ public class User implements Serializable {
     private Date createTime;
 
     /**
+     * 编辑时间
+     */
+    private Date editTime;
+
+    /**
      * 更新时间
      */
     private Date updateTime;
@@ -78,6 +83,31 @@ public class User implements Serializable {
      */
     @TableLogic
     private Integer isDelete;
+
+    /**
+     * 手机号码
+     */
+    private String phoneNumber;
+
+    /**
+     * 电子邮件
+     */
+    private String email;
+
+    /**
+     * 学历
+     */
+    private String grade;
+
+    /**
+     * 工作经验
+     */
+    private String workExperience;
+
+    /**
+     * 专业方向
+     */
+    private String expertiseDirection;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
