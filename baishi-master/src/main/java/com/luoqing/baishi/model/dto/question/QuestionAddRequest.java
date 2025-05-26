@@ -28,6 +28,11 @@ public class QuestionAddRequest implements Serializable {
     private List<String> tags;
 
     /**
+     * 题库id
+     */
+    private Long questionBankId;
+
+    /**
      * 推荐答案
      */
     private String answer;
