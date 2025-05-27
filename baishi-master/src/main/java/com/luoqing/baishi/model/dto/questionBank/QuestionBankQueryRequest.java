@@ -1,4 +1,4 @@
-package com.luoqing.baishi.model.dto.questionBank;
+package com.luoqing.baishi.model.dto.questionbank;
 
 import com.luoqing.baishi.common.PageRequest;
 import lombok.Data;
