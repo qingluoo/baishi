@@ -80,7 +80,6 @@ public class QuestionBankServiceImpl extends ServiceImpl<QuestionBankMapper, Que
         String searchText = questionBankQueryRequest.getSearchText();
         String sortField = questionBankQueryRequest.getSortField();
         String sortOrder = questionBankQueryRequest.getSortOrder();
-        List<String> tagList = questionBankQueryRequest.getTags();
         Long userId = questionBankQueryRequest.getUserId();
         String description = questionBankQueryRequest.getDescription();
         String picture = questionBankQueryRequest.getPicture();
@@ -94,11 +93,6 @@ public class QuestionBankServiceImpl extends ServiceImpl<QuestionBankMapper, Que
         queryWrapper.like(StringUtils.isNotBlank(title), "title", title);
         queryWrapper.like(StringUtils.isNotBlank(description), "description", description);
         // JSON 数组查询
-        if (CollUtil.isNotEmpty(tagList)) {
-            for (String tag : tagList) {
-                queryWrapper.like("tags", "\"" + tag + "\"");
-            }
-        }
         // 精确查询
         queryWrapper.ne(ObjectUtils.isNotEmpty(notId), "id", notId);
         queryWrapper.eq(ObjectUtils.isNotEmpty(id), "id", id);
