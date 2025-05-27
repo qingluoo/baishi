@@ -3,7 +3,7 @@ package com.luoqing.baishi.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.luoqing.baishi.model.dto.questionBankQuestion.QuestionBankQuestionQueryRequest;
+import com.luoqing.baishi.model.dto.questionbankquestion.QuestionBankQuestionQueryRequest;
 import com.luoqing.baishi.model.entity.QuestionBankQuestion;
 import com.luoqing.baishi.model.vo.QuestionBankQuestionVO;
 

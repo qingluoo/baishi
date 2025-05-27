@@ -8,7 +8,7 @@ import com.luoqing.baishi.common.ErrorCode;
 import com.luoqing.baishi.constant.CommonConstant;
 import com.luoqing.baishi.exception.ThrowUtils;
 import com.luoqing.baishi.mapper.QuestionBankQuestionMapper;
-import com.luoqing.baishi.model.dto.questionBankQuestion.QuestionBankQuestionQueryRequest;
+import com.luoqing.baishi.model.dto.questionbankquestion.QuestionBankQuestionQueryRequest;
 import com.luoqing.baishi.model.entity.QuestionBankQuestion;
 import com.luoqing.baishi.model.entity.User;
 import com.luoqing.baishi.model.vo.QuestionBankQuestionVO;
