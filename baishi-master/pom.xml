@@ -73,6 +73,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
+        <!--hotkey-->
+        <dependency>
+            <groupId>hotkey-client</groupId>
+            <artifactId>com.jd.platform.hotkey</artifactId>
+            <version>0.0.4-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/hotkey-client-0.0.4-SNAPSHOT.jar</systemPath>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.github.binarywang/wx-java-mp-spring-boot-starter -->
         <dependency>
             <groupId>com.github.binarywang</groupId>
