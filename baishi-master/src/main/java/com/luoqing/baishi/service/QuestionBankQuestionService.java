@@ -5,17 +5,18 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.luoqing.baishi.model.dto.questionbankquestion.QuestionBankQuestionQueryRequest;
 import com.luoqing.baishi.model.entity.QuestionBankQuestion;
+import com.luoqing.baishi.model.entity.User;
 import com.luoqing.baishi.model.vo.QuestionBankQuestionVO;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 题库题目关联表服务
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://www.code-nav.cn">编程导航学习圈</a>
  */
-public interface QuestionBankQuestionService extends IService<QuestionBankQuestion> {
+public interface QuestionBankQuestionService extends IService<QuestionBankQuestion>  {
 
     /**
      * 校验数据
@@ -50,4 +51,27 @@ public interface QuestionBankQuestionService extends IService<QuestionBankQuesti
      * @return
      */
     Page<QuestionBankQuestionVO> getQuestionBankQuestionVOPage(Page<QuestionBankQuestion> questionBankQuestionPage, HttpServletRequest request);
+
+    /**
+     * 批量添加题目到题库
+     * @param questionIdList
+     * @param questionBankId
+     * @param loginUser
+     */
+    void batchAddQuestionsToBank(List<Long> questionIdList, long questionBankId, User loginUser);
+
+    /**
+     * 批量从题库移除题目
+     * @param questionIdList
+     * @param questionBankId
+     */
+    void batchRemoveQuestionsFromBank(List<Long> questionIdList, long questionBankId);
+
+    /**
+     * 批量添加题目到题库（事务，仅供内部调用）
+     *
+     * @param questionBankQuestions
+     */
+    @Transactional(rollbackFor = Exception.class)
+    void batchAddQuestionsToBankInner(List<QuestionBankQuestion> questionBankQuestions);
 }

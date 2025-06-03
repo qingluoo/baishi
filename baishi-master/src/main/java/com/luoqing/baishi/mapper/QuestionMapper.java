@@ -2,6 +2,10 @@ package com.luoqing.baishi.mapper;
 
 import com.luoqing.baishi.model.entity.Question;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.Date;
+import java.util.List;
 
 /**
 * @author qingluo
@@ -11,6 +15,13 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface QuestionMapper extends BaseMapper<Question> {
 
+    /**
+     * 查询题目列表，包括被删除的题目
+     * @param minUpdateTime 最早更新时间
+     * @return 题目列表
+     */
+    @Select("SELECT * FROM question WHERE updateTime >= #{minUpdateTime}")
+    List<Question> listQuestionWithDelete(Date minUpdateTime);
 }
 
 

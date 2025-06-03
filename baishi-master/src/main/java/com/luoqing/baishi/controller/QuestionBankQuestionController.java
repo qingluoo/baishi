@@ -1,5 +1,6 @@
 package com.luoqing.baishi.controller;
 
+import cn.dev33.satoken.annotation.SaCheckRole;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -11,10 +12,7 @@ import com.luoqing.baishi.common.ResultUtils;
 import com.luoqing.baishi.constant.UserConstant;
 import com.luoqing.baishi.exception.BusinessException;
 import com.luoqing.baishi.exception.ThrowUtils;
-import com.luoqing.baishi.model.dto.questionbankquestion.QuestionBankQuestionAddRequest;
-import com.luoqing.baishi.model.dto.questionbankquestion.QuestionBankQuestionQueryRequest;
-import com.luoqing.baishi.model.dto.questionbankquestion.QuestionBankQuestionRemoveRequest;
-import com.luoqing.baishi.model.dto.questionbankquestion.QuestionBankQuestionUpdateRequest;
+import com.luoqing.baishi.model.dto.questionbankquestion.*;
 import com.luoqing.baishi.model.entity.QuestionBankQuestion;
 import com.luoqing.baishi.model.entity.User;
 import com.luoqing.baishi.model.vo.QuestionBankQuestionVO;
@@ -26,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 题库题目关联表接口
@@ -207,22 +206,68 @@ public class QuestionBankQuestionController {
     // endregion
 
     /**
-     * 移除题库题目关联表
+     * 移除题库题目关联（仅管理员可用）
      *
      * @param questionBankQuestionRemoveRequest
      * @return
      */
     @PostMapping("/remove")
-    public BaseResponse<Boolean> removeQuestionBankQuestion(@RequestBody QuestionBankQuestionRemoveRequest questionBankQuestionRemoveRequest) {
+    @SaCheckRole(UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> removeQuestionBankQuestion(
+            @RequestBody QuestionBankQuestionRemoveRequest questionBankQuestionRemoveRequest
+    ) {
+        // 参数校验
         ThrowUtils.throwIf(questionBankQuestionRemoveRequest == null, ErrorCode.PARAMS_ERROR);
         Long questionBankId = questionBankQuestionRemoveRequest.getQuestionBankId();
         Long questionId = questionBankQuestionRemoveRequest.getQuestionId();
-
+        ThrowUtils.throwIf(questionBankId == null || questionId == null, ErrorCode.PARAMS_ERROR);
+        // 构造查询
         LambdaQueryWrapper<QuestionBankQuestion> lambdaQueryWrapper = Wrappers.lambdaQuery(QuestionBankQuestion.class)
-               .eq(QuestionBankQuestion::getQuestionBankId, questionBankId)
-               .eq(QuestionBankQuestion::getQuestionId, questionId);
+                .eq(QuestionBankQuestion::getQuestionBankId, questionBankId)
+                .eq(QuestionBankQuestion::getQuestionId, questionId);
         boolean result = questionBankQuestionService.remove(lambdaQueryWrapper);
         return ResultUtils.success(result);
+    }
+
+    /**
+     * 批量添加题目到题库（仅管理员可用）
+     *
+     * @param questionBankQuestionBatchAddRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/add/batch")
+    @SaCheckRole(UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> batchAddQuestionsToBank(
+            @RequestBody QuestionBankQuestionBatchAddRequest questionBankQuestionBatchAddRequest,
+            HttpServletRequest request
+    ) {
+        ThrowUtils.throwIf(questionBankQuestionBatchAddRequest == null, ErrorCode.PARAMS_ERROR);
+        User loginUser = userService.getLoginUser(request);
+        Long questionBankId = questionBankQuestionBatchAddRequest.getQuestionBankId();
+        List<Long> questionIdList = questionBankQuestionBatchAddRequest.getQuestionIdList();
+        questionBankQuestionService.batchAddQuestionsToBank(questionIdList, questionBankId, loginUser);
+        return ResultUtils.success(true);
+    }
+
+    /**
+     * 批量从题库移除题目（仅管理员可用）
+     *
+     * @param questionBankQuestionBatchRemoveRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/remove/batch")
+    @SaCheckRole(UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> batchRemoveQuestionsFromBank(
+            @RequestBody QuestionBankQuestionBatchRemoveRequest questionBankQuestionBatchRemoveRequest,
+            HttpServletRequest request
+    ) {
+        ThrowUtils.throwIf(questionBankQuestionBatchRemoveRequest == null, ErrorCode.PARAMS_ERROR);
+        Long questionBankId = questionBankQuestionBatchRemoveRequest.getQuestionBankId();
+        List<Long> questionIdList = questionBankQuestionBatchRemoveRequest.getQuestionIdList();
+        questionBankQuestionService.batchRemoveQuestionsFromBank(questionIdList, questionBankId);
+        return ResultUtils.success(true);
     }
 
 }

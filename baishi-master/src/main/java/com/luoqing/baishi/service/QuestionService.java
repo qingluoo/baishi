@@ -4,11 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.luoqing.baishi.common.BaseResponse;
+import com.luoqing.baishi.model.dto.post.PostQueryRequest;
 import com.luoqing.baishi.model.dto.question.QuestionQueryRequest;
+import com.luoqing.baishi.model.entity.Post;
 import com.luoqing.baishi.model.entity.Question;
 import com.luoqing.baishi.model.vo.QuestionVO;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 题目服务
@@ -33,7 +36,7 @@ public interface QuestionService extends IService<Question> {
      * @return
      */
     QueryWrapper<Question> getQueryWrapper(QuestionQueryRequest questionQueryRequest);
-    
+
     /**
      * 获取题目封装
      *
@@ -59,4 +62,22 @@ public interface QuestionService extends IService<Question> {
      * @return
      */
     Page<Question> listQuestionByPage(QuestionQueryRequest questionQueryRequest);
+
+    /**
+     * 从 ES 查询题目
+     *
+     * @param questionQueryRequest
+     * @return
+     */
+    Page<Question> searchFromEs(QuestionQueryRequest questionQueryRequest);
+
+    /**
+     * 批量删除题目
+     *
+     * @param questionIdList
+     */
+
+    void batchDeleteQuestions(List<Long> questionIdList);
+
+
 }
