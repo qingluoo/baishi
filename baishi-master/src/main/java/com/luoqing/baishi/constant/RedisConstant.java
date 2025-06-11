@@ -12,6 +12,11 @@ public interface RedisConstant {
     String USER_SIGN_IN_REDIS_KEY_PREFIX = "user:signins";
 
     /**
+     * 当日题目浏览记录的 Redis key 前缀
+     */
+    String QUESTION_BROWSE_REDIS_KEY = "question:browse";
+
+    /**
      * 获取用户签到记录的 Redis Key
      * @param year 年份
      * @param userId 用户 id
@@ -20,4 +25,5 @@ public interface RedisConstant {
     static String getUserSignInRedisKey(int year, long userId) {
         return String.format("%s:%s:%S", USER_SIGN_IN_REDIS_KEY_PREFIX, year, userId);
     }
+
 }
